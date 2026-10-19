@@ -65,7 +65,8 @@ Follow these rules.
 1. Call `list_products`.
 2. If `$ARGUMENTS` names a product, select it.
 3. If not, show the list and ask the user which product the SBOM belongs to. Do not guess.
-4. If `list_products` returns a plan error, ask the user for the product ID from the dashboard. Do not upload without a product ID unless the user asks for a company-wide SBOM.
+4. On the Reporting plan, `list_products` returns only the id and the name, with `detail` set to `basic`. That is enough for the upload.
+5. If `list_products` returns a plan error, ask the user for the product ID from the dashboard. Do not upload without a product ID unless the user asks for a company-wide SBOM.
 
 ## Step 5. Confirm and upload
 

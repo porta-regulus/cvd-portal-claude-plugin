@@ -2,7 +2,7 @@
 name: init-cvd
 description: Writes SECURITY.md and .well-known/security.txt (RFC 9116) in the current repository. Both files point to the company's CVD Portal disclosure portal. Use when the repository has no vulnerability disclosure policy or security contact, or when the user asks to set up coordinated vulnerability disclosure.
 when_to_use: Trigger phrases include "add a SECURITY.md", "set up security.txt", "add a CVD policy", "publish a vulnerability disclosure contact". The skill edits files but does not commit.
-argument-hint: "[company slug]"
+argument-hint: "[company slug, only when MCP is not connected]"
 disable-model-invocation: true
 allowed-tools:
   - mcp__plugin_cvd-portal_cvd-portal__get_getting_started
@@ -22,14 +22,12 @@ Annex I, Part II, point 6, requires the manufacturer to provide a contact addres
 
 This is a summary, not a quote. Tell the user to verify both points on EUR-Lex at https://eur-lex.europa.eu/eli/reg/2024/2847/oj.
 
-## Step 1. Find the company slug
+## Step 1. Find the portal URL
 
-1. If `$ARGUMENTS` contains a slug, use it.
-2. If not, ask the user for the slug. The slug is the first part of the portal host name, for example `acme` in `acme.cvdportal.com`. The dashboard shows it in Settings. Do not guess the slug.
-3. Call `get_getting_started`. Use the company name in the result to confirm with the user that the slug belongs to the same company.
-   If the call fails because the user is not signed in or the plan has no MCP access, continue with the slug that the user gave.
-4. Tell the user the portal URL, `https://<slug>.cvdportal.com`.
-5. Ask the user to confirm that the portal is turned on. If `get_getting_started` returns the step `enable_portal`, the portal is off. Tell the user to turn it on in Settings first.
+1. Call `get_getting_started`.
+2. If the result has `portal.url`, use it as `<portal>`. A company with a verified custom domain gets that domain here, not `<slug>.cvdportal.com`. Show the company name and `<portal>` to the user and ask the user to confirm.
+3. If `portal.enabled` is false, the portal is off. Tell the user to turn it on in Settings first.
+4. If the call fails, or the result has no `portal`, use the slug in `$ARGUMENTS`. If there is none, ask the user for the slug. The slug is the first part of the portal host name, for example `acme` in `acme.cvdportal.com`. Do not guess the slug. Then `<portal>` is `https://<slug>.cvdportal.com`.
 
 ## Step 2. Check the existing files
 
@@ -39,14 +37,14 @@ This is a summary, not a quote. Tell the user to verify both points on EUR-Lex a
 
 ## Step 3. Write security.txt
 
-Use this content. Replace `<slug>`. Set `Expires` to a date less than one year from today, in RFC 3339 format with a time zone.
+Use this content. Replace `<portal>`. Set `Expires` to a date less than one year from today, in RFC 3339 format with a time zone.
 
 ```
 # Security contact for this project. RFC 9116.
 # Legal basis: Regulation (EU) 2024/2847, Annex I, Part II, points 5 and 6.
-Contact: https://<slug>.cvdportal.com/submit
+Contact: <portal>/submit
 Expires: <YYYY-MM-DD>T00:00:00.000Z
-Policy: https://<slug>.cvdportal.com/policy
+Policy: <portal>/policy
 Preferred-Languages: en
 ```
 
@@ -60,7 +58,7 @@ Follow these rules.
 
 ## Step 4. Write SECURITY.md
 
-Use this structure. Replace `<slug>` and `<product>`. Keep it short.
+Use this structure. Replace `<portal>` and `<product>`. Keep it short.
 
 ```markdown
 # Security policy
@@ -69,13 +67,13 @@ Use this structure. Replace `<slug>` and `<product>`. Keep it short.
 
 ## Report a vulnerability
 
-Report a vulnerability in <product> through our disclosure portal at https://<slug>.cvdportal.com.
+Report a vulnerability in <product> through our disclosure portal at <portal>.
 
 Do not report a vulnerability in a public issue, pull request or discussion.
 
 ## Our disclosure policy
 
-Our coordinated vulnerability disclosure policy is at https://<slug>.cvdportal.com/policy.
+Our coordinated vulnerability disclosure policy is at <portal>/policy.
 
 ## What to include
 

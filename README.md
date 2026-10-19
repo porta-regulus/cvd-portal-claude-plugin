@@ -68,7 +68,7 @@ The skills call tools by name. They work with either server. The permission rule
 |---|---|---|
 | `list-gaps` | Compliance or higher. The free trial runs at Compliance level. | `read` scope. Role MEMBER or higher. |
 | `init-cvd` | Any plan with a public portal. The MCP check needs Reporting or higher. Without it, the skill uses the slug that you give. | No portal write. |
-| `sbom` | Reporting or higher for the upload. Compliance or higher to list products. | `sbom:write` scope. Role ADMIN. Node.js for cdxgen, or syft. |
+| `sbom` | Reporting or higher. | `sbom:write` scope. Role ADMIN. Node.js for cdxgen, or syft. |
 
 ## Rules for the agent
 
