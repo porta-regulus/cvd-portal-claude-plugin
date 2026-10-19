@@ -33,7 +33,12 @@ Claude Code stores the token. You do not need an API key.
 Use an API key when a browser sign-in is not possible, for example on a CI runner.
 
 1. Create an API key in the CVD Portal dashboard. Give it only the scopes that you need.
-2. Store the key in an environment variable, for example `CVD_PORTAL_API_KEY`. Do not write the key into a file in the repository.
+2. Put the key in the variable `CVD_PORTAL_API_KEY`. This command reads the key without echo, so the key does not go into the shell history. Paste the key and press Enter. If the variable is empty, the server gets an empty key and every call fails.
+
+```bash
+read -rs CVD_PORTAL_API_KEY && export CVD_PORTAL_API_KEY
+```
+
 3. Add a second server at user scope with this command.
 
 ```bash
