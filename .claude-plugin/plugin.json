@@ -1,0 +1,19 @@
+{
+  "name": "cvd-portal",
+  "displayName": "CVD Portal",
+  "version": "0.1.0",
+  "description": "Connect Claude Code to CVD Portal. Find the EU Cyber Resilience Act gaps that a repository can close, publish a coordinated vulnerability disclosure contact, and upload an SBOM.",
+  "author": {
+    "name": "Porta Regulus",
+    "email": "support@cvdportal.com",
+    "url": "https://cvdportal.com"
+  },
+  "homepage": "https://docs.cvdportal.com/cvd/claude-plugin",
+  "repository": "https://github.com/porta-regulus/cvd-portal-claude-plugin",
+  "license": "MIT",
+  "keywords": ["cyber-resilience-act", "cra", "cvd", "security.txt", "sbom", "cyclonedx", "vulnerability-disclosure", "compliance"],
+  "documentationUrl": "https://docs.cvdportal.com/cvd/claude-plugin",
+  "supportUrl": "https://cvdportal.com/support",
+  "privacyPolicyUrl": "https://cvdportal.com/privacy",
+  "termsOfServiceUrl": "https://cvdportal.com/terms"
+}

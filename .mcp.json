@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cvd-portal": {
+      "type": "http",
+      "url": "https://cvdportal.com/api/mcp"
+    }
+  }
+}
