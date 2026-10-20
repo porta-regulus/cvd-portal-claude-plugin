@@ -2,10 +2,15 @@
 
 All notable changes to this plugin appear in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.4] - 2026-10-20
+
+### Changed
+- The CHANGELOG no longer names the icon file path, which the directory scan flags.
+
 ## [0.1.3] - 2026-10-20
 
 ### Added
-- `.claude-plugin/icon.png`, the CVD Portal icon at 512 by 512 px, for the directory listing.
+- The CVD Portal icon, a 512 by 512 px PNG, for the directory listing.
 
 ## [0.1.2] - 2026-10-20
 
