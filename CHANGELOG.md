@@ -2,6 +2,13 @@
 
 All notable changes to this plugin appear in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.2] - 2026-10-20
+
+### Changed
+- The `sbom` skill pins `@cyclonedx/cdxgen` to 12.8.5.
+- The README lists what each command runs, sends and fetches. It no longer says that the plugin runs no code, because `sbom` runs syft or cdxgen.
+- The README no longer shows a command that sends an API key from an environment variable. It links to the docs for API key setup.
+
 ## [0.1.1] - 2026-10-19
 
 ### Changed

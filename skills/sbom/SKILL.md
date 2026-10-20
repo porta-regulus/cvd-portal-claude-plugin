@@ -27,7 +27,7 @@ This is a summary, not a quote. Tell the user to verify the point on EUR-Lex at 
 ## Step 1. Choose the generator
 
 1. Run `command -v syft`.
-2. If syft is present, use syft. If not, use cdxgen through npx.
+2. If syft is present, use syft. If not, use cdxgen 12.8.5 through npx. Always use that exact version.
 3. Tell the user which generator you will use and the command. `npx` downloads the package if it is not in the npm cache. Ask the user before the first run.
 
 ## Step 2. Generate the SBOM
@@ -43,7 +43,7 @@ syft dir:. -o cyclonedx-json=<out>/bom.cdx.json
 Use this command with cdxgen.
 
 ```bash
-npx --yes @cyclonedx/cdxgen -o <out>/bom.cdx.json .
+npx --yes @cyclonedx/cdxgen@12.8.5 -o <out>/bom.cdx.json .
 ```
 
 Follow these rules.

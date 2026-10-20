@@ -30,27 +30,7 @@ Claude Code stores the token. You do not need an API key.
 
 ## Use an API key instead
 
-Use an API key when a browser sign-in is not possible, for example on a CI runner.
-
-1. Create an API key in the CVD Portal dashboard. Give it only the scopes that you need.
-2. Put the key in the variable `CVD_PORTAL_API_KEY`. This command reads the key without echo, so the key does not go into the shell history. Paste the key and press Enter. If the variable is empty, the server gets an empty key and every call fails.
-
-```bash
-read -rs CVD_PORTAL_API_KEY && export CVD_PORTAL_API_KEY
-```
-
-3. Add a second server at user scope with this command.
-
-```bash
-claude mcp add --transport http --scope user cvd-portal-key https://cvdportal.com/api/mcp \
-  --header "Authorization: Bearer ${CVD_PORTAL_API_KEY}"
-```
-
-4. Disable the plugin server `cvd-portal` in `/mcp`, so that only one server is active.
-
-The shell expands the variable when you run the command. Claude Code then stores the key in plain text in `~/.claude.json`, outside the repository. Give the key a short expiry and rotate it.
-
-The skills call tools by name. They work with either server. The permission rules in the skills pre-approve the plugin server only, so Claude Code asks before each call to `cvd-portal-key`.
+Use an API key when a browser sign-in is not possible, for example on a CI runner. The plugin itself never reads an API key. Add the key as a separate MCP server, as described at https://docs.cvdportal.com/cvd/claude-plugin, and disable the plugin server `cvd-portal` in `/mcp` so that only one server is active.
 
 ## Commands
 
@@ -58,7 +38,7 @@ The skills call tools by name. They work with either server. The permission rule
 |---|---|---|
 | `/cvd-portal:list-gaps [product]` | Lists the open conformity gaps for a product and ranks them by the evidence that the repository can supply. | Nothing. Read-only. |
 | `/cvd-portal:init-cvd [slug]` | Writes `SECURITY.md` and `.well-known/security.txt` that point to `https://<slug>.cvdportal.com`. Shows the diff. Does not commit. | Local files only. |
-| `/cvd-portal:sbom [product]` | Generates a CycloneDX SBOM with syft or `@cyclonedx/cdxgen`, shows the component count, and uploads it after you confirm. | The portal, after confirmation. |
+| `/cvd-portal:sbom [product]` | Generates a CycloneDX SBOM with syft or `@cyclonedx/cdxgen@12.8.5`, shows the component count, and uploads it after you confirm. | The portal, after confirmation. |
 
 `init-cvd` and `sbom` run only when you type the command. Claude does not start them by itself.
 
@@ -79,9 +59,19 @@ The skills call tools by name. They work with either server. The permission rule
 - Claude does not invent or paraphrase legal citations. Verify each citation on [EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/2847/oj).
 - Each repository change names the Annex I point or the Article that it serves.
 
+## What the plugin runs, sends and fetches
+
+| Command | Runs on your machine | Sends | Fetches |
+|---|---|---|---|
+| `list-gaps` | Nothing. Claude reads files in the repository. | MCP read calls to `https://cvdportal.com/api/mcp` | Your products and conformity gaps |
+| `init-cvd` | Nothing. Claude writes `SECURITY.md` and `security.txt` after it shows you the diff. | One MCP read call | Your portal URL |
+| `sbom` | `syft` if it is installed. If not, `npx @cyclonedx/cdxgen@12.8.5`, which downloads that pinned package from the npm registry after you approve the command. | The generated SBOM to `upload_sbom`, only after you confirm | Your product list |
+
+The plugin has no hooks, no scripts and no bundled binaries. All network traffic from the plugin goes to `https://cvdportal.com/api/mcp`, except the npm download above.
+
 ## Privacy
 
-- The plugin contains no code that runs on your machine. It contains instructions for Claude and one MCP server address.
+- The plugin contains instructions for Claude and one MCP server address. The only program it runs is the SBOM generator in the table above.
 - The skills read files in your repository to find evidence. File contents go to the Claude model that you use. They go to CVD Portal only when a skill uploads them, for example the SBOM after you confirm.
 - Vulnerability reports and Article 14 drafts stay in CVD Portal. The skills do not write them into repository files.
 - The CVD Portal privacy policy is at https://cvdportal.com/privacy.
