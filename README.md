@@ -38,7 +38,7 @@ Use an API key when a browser sign-in is not possible, for example on a CI runne
 |---|---|---|
 | `/cvd-portal:list-gaps [product]` | Lists the open conformity gaps for a product and ranks them by the evidence that the repository can supply. | Nothing. Read-only. |
 | `/cvd-portal:init-cvd [slug]` | Writes `SECURITY.md` and `.well-known/security.txt` that point to `https://<slug>.cvdportal.com`. Shows the diff. Does not commit. | Local files only. |
-| `/cvd-portal:sbom [product]` | Generates a CycloneDX SBOM with syft or `@cyclonedx/cdxgen@12.8.5`, shows the component count, and uploads it after you confirm. | The portal, after confirmation. |
+| `/cvd-portal:sbom [file] [product]` | Finds an SBOM, or a dependency manifest, in the repository, shows the component count, and uploads it after you confirm. | The portal, after confirmation. |
 
 `init-cvd` and `sbom` run only when you type the command. Claude does not start them by itself.
 
@@ -48,7 +48,7 @@ Use an API key when a browser sign-in is not possible, for example on a CI runne
 |---|---|---|
 | `list-gaps` | Compliance or higher. The free trial runs at Compliance level. | `read` scope. Role MEMBER or higher. |
 | `init-cvd` | Any plan with a public portal. The MCP check needs Reporting or higher. Without it, the skill uses the slug that you give. | No portal write. |
-| `sbom` | Reporting or higher. | `sbom:write` scope. Role ADMIN. Node.js for cdxgen, or syft. |
+| `sbom` | Reporting or higher. | `sbom:write` scope. Role ADMIN. An SBOM file or a dependency manifest in the repository. |
 
 ## Rules for the agent
 
@@ -65,13 +65,15 @@ Use an API key when a browser sign-in is not possible, for example on a CI runne
 |---|---|---|---|
 | `list-gaps` | Nothing. Claude reads files in the repository. | MCP read calls to `https://cvdportal.com/api/mcp` | Your products and conformity gaps |
 | `init-cvd` | Nothing. Claude writes `SECURITY.md` and `security.txt` after it shows you the diff. | One MCP read call | Your portal URL |
-| `sbom` | `syft` if it is installed. If not, `npx @cyclonedx/cdxgen@12.8.5`, which downloads that pinned package from the npm registry after you approve the command. | The generated SBOM to `upload_sbom`, only after you confirm | Your product list |
+| `sbom` | Nothing. Claude reads the SBOM or manifest file. | The file to `upload_sbom`, only after you confirm | Your product list |
 
-The plugin has no hooks, no scripts and no bundled binaries. All network traffic from the plugin goes to `https://cvdportal.com/api/mcp`, except the npm download above.
+The plugin has no hooks, no scripts and no bundled binaries. The plugin runs no program on your machine. All network traffic from the plugin goes to `https://cvdportal.com/api/mcp`.
+
+To create an SBOM first, run a generator yourself, for example `syft dir:. -o cyclonedx-json=bom.cdx.json` or `npx @cyclonedx/cdxgen@12.8.5 -o bom.cdx.json .`, then run `/cvd-portal:sbom`.
 
 ## Privacy
 
-- The plugin contains instructions for Claude and one MCP server address. The only program it runs is the SBOM generator in the table above.
+- The plugin contains instructions for Claude and one MCP server address. It runs no program on your machine.
 - The skills read files in your repository to find evidence. File contents go to the Claude model that you use. They go to CVD Portal only when a skill uploads them, for example the SBOM after you confirm.
 - Vulnerability reports and Article 14 drafts stay in CVD Portal. The skills do not write them into repository files.
 - The CVD Portal privacy policy is at https://cvdportal.com/privacy.

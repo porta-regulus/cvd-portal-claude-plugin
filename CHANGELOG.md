@@ -2,6 +2,11 @@
 
 All notable changes to this plugin appear in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.0] - 2026-10-20
+
+### Changed
+- The `sbom` skill no longer runs a generator. It uploads an SBOM file that already exists, or a dependency manifest such as `package.json`, after you confirm. The README shows the syft and cdxgen commands for you to run yourself. The plugin now runs no program on your machine.
+
 ## [0.1.4] - 2026-10-20
 
 ### Changed
