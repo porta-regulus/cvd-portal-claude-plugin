@@ -5,7 +5,6 @@ when_to_use: Trigger phrases include "add a SECURITY.md", "set up security.txt",
 argument-hint: "[company slug, only when MCP is not connected]"
 disable-model-invocation: true
 allowed-tools:
-  - mcp__plugin_cvd-portal_cvd-portal__get_getting_started
   - Read
   - Glob
 ---

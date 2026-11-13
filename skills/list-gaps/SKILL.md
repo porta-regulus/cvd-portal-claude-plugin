@@ -4,11 +4,6 @@ description: Read-only. Lists the open EU Cyber Resilience Act conformity gaps f
 when_to_use: Trigger phrases include "list my CRA gaps", "what is missing for the CRA", "which gaps can this repo close", "Annex I gaps". Do not use to change data in the portal.
 argument-hint: "[product name]"
 allowed-tools:
-  - mcp__plugin_cvd-portal_cvd-portal__get_getting_started
-  - mcp__plugin_cvd-portal_cvd-portal__list_products
-  - mcp__plugin_cvd-portal_cvd-portal__get_conformity_gaps
-  - mcp__plugin_cvd-portal_cvd-portal__get_clause_mapping
-  - mcp__plugin_cvd-portal_cvd-portal__lookup_regulatory_reference
   - Read
   - Glob
   - Grep

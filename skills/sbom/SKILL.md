@@ -5,8 +5,6 @@ when_to_use: Trigger phrases include "upload the SBOM", "refresh the SBOM in CVD
 argument-hint: "[path to SBOM file] [product name]"
 disable-model-invocation: true
 allowed-tools:
-  - mcp__plugin_cvd-portal_cvd-portal__get_getting_started
-  - mcp__plugin_cvd-portal_cvd-portal__list_products
   - Read
   - Glob
 ---
@@ -28,7 +26,7 @@ This is a summary, not a quote. Tell the user to verify the point on EUR-Lex at 
 1. If `$ARGUMENTS` names a file path, use that file.
 2. If not, look for an SBOM in the repository: `*.cdx.json`, `bom.json`, `*.spdx.json` and `sbom*.json`. Ignore `node_modules` and other dependency folders.
 3. If there is more than one, show the list and ask the user which one to upload.
-4. If there is no SBOM, look for a dependency manifest that the portal accepts: `package.json`, `requirements.txt`, `go.mod`, `Cargo.toml` or `Gemfile.lock`. Tell the user that a manifest gives less detail than a real SBOM, because it has no transitive dependencies and no hashes. Ask the user to choose: upload the manifest, or create an SBOM first.
+4. If there is no SBOM, look for a dependency manifest that the portal accepts: `package.json`, `requirements.txt`, `go.mod`, `Cargo.toml` or `Gemfile.lock`. Tell the user that a manifest gives less detail than a real SBOM. `package.json`, `requirements.txt` and `Cargo.toml` list only the direct dependencies, often as version ranges. `Gemfile.lock` and `go.mod` (Go 1.17 or later) also list the transitive dependencies. A manifest usually has no hashes. Ask the user to choose: upload the manifest, or create an SBOM first.
 5. If the user wants an SBOM first, tell the user to run a generator and then run this command again. Show these commands as text. Do not run them.
 
 ```

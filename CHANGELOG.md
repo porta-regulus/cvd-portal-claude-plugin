@@ -2,6 +2,12 @@
 
 All notable changes to this plugin appear in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.1] - 2026-11-13
+
+### Changed
+- The skills no longer pre-approve CVD Portal MCP tools in `allowed-tools`. Each list now has only `Read`, `Glob` and `Grep`. Claude Code asks for your permission the first time a skill calls a CVD Portal tool.
+- The `sbom` skill no longer says that every manifest lacks transitive dependencies. `Gemfile.lock` and `go.mod` list them. `package.json`, `requirements.txt` and `Cargo.toml` list only direct dependencies.
+
 ## [0.2.0] - 2026-10-20
 
 ### Changed
